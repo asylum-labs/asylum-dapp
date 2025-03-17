@@ -6,12 +6,12 @@ function ScrollCard() {
       <div className="w-full md:w-[100%] lg:w-full lg:px-10 relative">
         <div className="lg:border-2 md:text-justify border-[#6c6c6c] rounded-3xl text-grey md:p-4">
           <p className="text-grey text-lg md:mt-5 md:w-[85%]">
-            Manage risk & liquidity on any ERC20 tokens you own. This platform
+            Manage risk & liquidity on any ERC20 tokens you own. Asylum Labs
             enables you to unlock liquidity and manage risk on any ERC20 tokens
             you own, without selling.
           </p>
           <p className="text-light-purple text-lg mt-5 md:w-[85%]">
-            Xeon Protocol helps you manage your ERC20s:
+            Asylum Labs helps you manage your ERC20s:
           </p>
           <ol className="text-grey text-lg mt-5 md:w-[85%]">
             <li>

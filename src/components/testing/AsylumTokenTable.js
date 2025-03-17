@@ -1,5 +1,5 @@
-import XeonTokenDistributorABI from "@/abi/XeonTokenDistributor.abi.json";
-import {Constants} from "@/abi/constants";
+import AsylumTokenDistributorABI from '@/abi/AsylumTokenDistributor.abi.json';
+import { Constants } from '@/abi/constants';
 import {
   Modal,
   ModalBody,
@@ -10,43 +10,46 @@ import {
   ModalOverlay,
   Spinner,
   useDisclosure,
-} from "@chakra-ui/react";
-import {ethers} from "ethers";
-import {useEffect, useState} from "react";
-import BookmarkAdded from "../BookmarkAdded";
-import {FaCopy} from "react-icons/fa";
+} from '@chakra-ui/react';
+import { ethers } from 'ethers';
+import { useEffect, useState } from 'react';
+import BookmarkAdded from '../BookmarkAdded';
+import { FaCopy } from 'react-icons/fa';
 
-const XeonTokenTable = () => {
+const AsylumTokenTable = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
-  const [message, setMessage] = useState("");
-  const [status, setStatus] = useState("");
-  const {isOpen, onOpen, onClose} = useDisclosure();
-  const [txHash, setTxHash] = useState("");
-  const [txChainId, setTxChainId] = useState("");
+  const [message, setMessage] = useState('');
+  const [status, setStatus] = useState('');
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [txHash, setTxHash] = useState('');
+  const [txChainId, setTxChainId] = useState('');
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text).then(
       () => {
-        alert("Address copied to clipboard!");
+        alert('Address copied to clipboard!');
       },
       (err) => {
-        alert("Failed to copy the address.");
+        alert('Failed to copy the address.');
       }
     );
   };
 
-  const xeonToken = {
-    name: "Xeon Token",
-    symbol: "XEON",
-    address: Constants.testnet.XeonToken,
-    supply: "100,000,000",
+  const asylumToken = {
+    name: 'Asylum Token',
+    symbol: 'ALT',
+    address: Constants.testnet.AsylumToken,
+    supply: '100,000,000',
   };
 
-  const handleClaimXeon = async () => {
+  /**
+   * Handle claim button click to get asylum tokens
+   */
+  const handleClaim = async () => {
     if (!window.ethereum) {
-      setError("Please install MetaMask!");
+      setError('Please install MetaMask!');
       return;
     }
 
@@ -57,33 +60,35 @@ const XeonTokenTable = () => {
     try {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
-      const xeonDistributorContract = new ethers.Contract(
-        Constants.testnet.XeonTokenDistributor,
-        XeonTokenDistributorABI,
+      const asylumDistributorContract = new ethers.Contract(
+        Constants.testnet.AsylumTokenDistributor,
+        AsylumTokenDistributorABI,
         signer
       );
 
       const userAddress = await signer.getAddress();
-      const hasClaimed = await xeonDistributorContract.hasUserClaimed(
-        userAddress
-      );
+      const hasClaimed =
+        await asylumDistributorContract.hasUserClaimed(userAddress);
 
       if (hasClaimed) {
-        setMessage("You have already claimed your XEON tokens.");
-        setStatus("error");
+        setMessage('You have already claimed your ALT tokens.');
+        setStatus('error');
       } else {
-        const transaction = await xeonDistributorContract.claimXeon();
+        // IMPORTANT: function in the original contract is still named "claimXeon" - we are not renaming the actual contract method
+        // But we're using it to claim Asylum tokens now
+        // TODO: redeploy smart contracts with updated function names and update references
+        const transaction = await asylumDistributorContract.claimXeon();
         await transaction.wait();
         setTxHash(transaction.hash);
         setTxChainId(transaction.chainId);
         setShowPopup(true);
-        setMessage("XEON tokens claimed successfully!");
-        setStatus("success");
+        setMessage('ALT tokens claimed successfully!');
+        setStatus('success');
       }
     } catch (error) {
-      console.error("Error claiming XEON tokens:", error);
-      setMessage("Failed to claim XEON tokens.");
-      setStatus("failed");
+      console.error('Error claiming ALT tokens:', error);
+      setMessage('Failed to claim ALT tokens.');
+      setStatus('failed');
     }
 
     setLoading(false);
@@ -91,7 +96,7 @@ const XeonTokenTable = () => {
 
   return (
     <div className="overflow-x-auto overflow-y-hidden mt-10 2xl:mt-32 px-8 pt-8 md:px-20 max-w-screen-2xl mx-auto">
-      <h1 className="text-3xl text-grey">Claim testnet XEON</h1>
+      <h1 className="text-3xl text-grey">Claim testnet ALT</h1>
       <table className="min-w-full bg-black border rounded mt-10 text-grey">
         <thead>
           <tr>
@@ -99,35 +104,40 @@ const XeonTokenTable = () => {
             <th className="py-2 px-4 border-b text-left">SYMB</th>
             <th className="py-2 px-4 border-b text-left">ADDR</th>
             <th className="py-2 px-4 border-b text-left">SUPPLY</th>
-            <th className="py-2 px-4 border-b text-left">{""}</th>
+            <th className="py-2 px-4 border-b text-left">{''}</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td className="py-2 px-4 border-b text-left">{xeonToken.name}</td>
-            <td className="py-2 px-4 border-b text-left">{xeonToken.symbol}</td>
+            <td className="py-2 px-4 border-b text-left">{asylumToken.name}</td>
+            <td className="py-2 px-4 border-b text-left">
+              {asylumToken.symbol}
+            </td>
             <td className="py-2 px-4 border-b text-left">
               <a
                 target="_blank"
                 rel="noreferrer noopener"
-                href={`https://sepolia.basescan.org/address/${xeonToken.address}`}
+                href={`https://sepolia.basescan.org/address/${asylumToken.address}`}
               >
-                {xeonToken.address.slice(0, 6)}...{xeonToken.address.slice(-4)}
+                {asylumToken.address.slice(0, 6)}...
+                {asylumToken.address.slice(-4)}
               </a>
               <button
                 className="ml-2 bg-black text-white px-2 py-1 rounded hover:text-lime-400"
-                onClick={() => copyToClipboard(xeonToken.address)}
+                onClick={() => copyToClipboard(asylumToken.address)}
               >
                 <FaCopy />
               </button>
             </td>
-            <td className="py-2 px-4 border-b text-left">{xeonToken.supply}</td>
+            <td className="py-2 px-4 border-b text-left">
+              {asylumToken.supply}
+            </td>
             <td className="py-2 px-4 border-b text-left">
               <button
                 className="bg-black flex items-center gap-2 border-dashed border-light-purple border-2 text-white px-8 py-2 rounded-full hover:text-lime-400"
-                onClick={handleClaimXeon}
+                onClick={handleClaim}
               >
-                Claim XEON
+                Claim ALT
               </button>
             </td>
           </tr>
@@ -136,12 +146,12 @@ const XeonTokenTable = () => {
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent bg={"#000"}>
-          <ModalHeader bg={"#000"} color={"white"}>
-            Claim XEON Tokens
+        <ModalContent bg={'#000'}>
+          <ModalHeader bg={'#000'} color={'white'}>
+            Claim ALT Tokens
           </ModalHeader>
           <ModalCloseButton />
-          <ModalBody bg={"#000"}>
+          <ModalBody bg={'#000'}>
             {loading ? (
               <Spinner />
             ) : (
@@ -181,4 +191,4 @@ const XeonTokenTable = () => {
   );
 };
 
-export default XeonTokenTable;
+export default AsylumTokenTable;
