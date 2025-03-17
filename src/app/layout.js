@@ -22,7 +22,24 @@ export default function RootLayout({ children }) {
 
         <title>{metadata.title}</title>
         <meta name="description" content={metadata.description} />
-        <link rel="icon" href="/public/favicon.ico" />
+        <link
+          rel="icon"
+          type="image/png"
+          href="/public/favicon/favicon-96x96.png"
+        />
+        <link
+          rel="icon"
+          type="image/svg+xml"
+          href="/public/favicon/favicon.svg"
+        />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/public/favicon/apple-touch-icon.png"
+        />
+        <meta name="apple-mobile-web-app-title" content="Asylum" />
+        <link rel="shortcut icon" href="/public/favicon/favicon.ico" />
+        <link rel="manifest" href="/public/favicon/site.webmanifest" />
         <meta property="og:title" content={metadata.title} />
         <meta property="og:description" content={metadata.description} />
         <meta property="og:image" content={metadata.image} />

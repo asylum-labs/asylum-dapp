@@ -1,38 +1,57 @@
 'use client';
+import { motion } from 'framer-motion';
 import Table from './Table';
-function VaultBalances() {
+
+export default function VaultBalances() {
   return (
-    <div className="flex flex-col lg:flex-row gap-4 px-8 pt-8 md:px-10 max-w-screen-2xl mx-auto">
-      <div className="md:w-[70%]">
-        <Table />
+    <div className="px-8 pt-8 md:px-20 lg:mt-20 max-w-screen-2xl mx-auto">
+      <div className="mb-6">
+        <h4 className="text-grey text-2xl">STAKING</h4>
       </div>
-      <div className=" md:flex md:flex-row md:justify-between lg:flex-col lg:w-[30%]">
-        <div className="border-0 rounded-xl border-grey w-full p-4 hover:border-animate text-left">
-          <p className="text-lime text-3xl">Stake $XEON</p>
-          <p className="text-grey text-left mt-2">
-            XEON, our native token, is crucial to supporting our ecosystem. As
-            such, we reward you through revenue sharing for buying and staking
-            it. Protocol revenue from fees and taxes is distributed to all
-            stakers.
+      <div className="mx-auto flex flex-col md:flex-row gap-6">
+        <div className="bg-[#000] w-full md:w-1/3 rounded-xl border border-grey p-8">
+          <p className="text-lime text-3xl">Stake $ALT</p>
+          <p className="text-grey mt-4">
+            ALT, our native token, is crucial to supporting our ecosystem. As
+            holders, you&apos;re not just invested, but active in our
+            protocol&apos;s success. Staking $ALT offers numerous benefits:
+            protocol governance, revenue sharing from the protocol, and access
+            to special staking pools.
           </p>
-          <button className="text-white bg-button-gradient mx-auto mt-5 px-8 p-2 rounded-full border-t-none border-b-[1px] border-r-[1px] border-l-[1px] border-button-gradient hover:bg-purple hover:border-lime">
-            Stake Now
-          </button>
+          <div className="flex flex-col gap-2"></div>
         </div>
-        <div className="border-0 rounded-xl border-grey w-full p-4 hover:border-animate text-left">
-          <p className="text-lime text-3xl">Mine | Farm ERC20s</p>
-          <p className="text-grey text-left mt-2">
-            Settle hedges and earn a share of the settlement fees, in
-            underlying-or-paired currency. Provide hedge liquidity, or protocol
-            collateral and earn a share of the farming revenue.
+        <div className="bg-[#000] w-full md:w-1/3 rounded-xl border border-grey p-8">
+          <p className="text-lime text-3xl">
+            Real <span className="text-light-purple">Yield</span> Revenue
           </p>
-          <button className="text-white bg-floral mx-auto mt-5 px-8 p-2 rounded-full border-t-none border-b-[1px] border-r-[1px] border-l-[1px] border-button-gradient hover:bg-purple hover:border-lime">
-            Coming Soon
-          </button>
+          <p className="text-grey mt-4">
+            Our protocol generates revenue from multiple sources: trading fees,
+            lending interests, options premiums, and more. What sets us apart?
+            We share this back with our stakers. Simply stake $ALT, and
+            you&apos;ll regularly receive tokens from our revenue - real income
+            from real usage.
+          </p>
+        </div>
+        <div className="bg-[#000] w-full md:w-1/3 rounded-xl border border-grey p-8">
+          <p className="text-lime text-3xl">Pool Assignments</p>
+          <p className="text-grey mt-4">
+            Choose a specific purpose for your staked tokens. Assign them to
+            contribute to lending collateral pools, hedge liquidity reserves, or
+            our innovative mining program. Each assignment offers different
+            reward structures - diversify your staking for balanced returns.
+          </p>
+          <div className="flex flex-col gap-2"></div>
+        </div>
+      </div>
+      <div className="w-full flex flex-col justify-center items-center mt-10">
+        <div className="bg-[#000] w-full md:w-3/4 border border-grey rounded-lg ">
+          <div className="w-full neon-border text-center py-6 opacity-100">
+            <p className="text-lime text-2xl font-normal">
+              Stake with a strategy that suits your goals
+            </p>
+          </div>
         </div>
       </div>
     </div>
   );
 }
-
-export default VaultBalances;

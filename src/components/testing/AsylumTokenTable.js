@@ -44,7 +44,10 @@ const AsylumTokenTable = () => {
     supply: '100,000,000',
   };
 
-  const handleClaimAsylum = async () => {
+  /**
+   * Handle claim button click to get asylum tokens
+   */
+  const handleClaim = async () => {
     if (!window.ethereum) {
       setError('Please install MetaMask!');
       return;
@@ -71,6 +74,9 @@ const AsylumTokenTable = () => {
         setMessage('You have already claimed your ALT tokens.');
         setStatus('error');
       } else {
+        // IMPORTANT: function in the original contract is still named "claimXeon" - we are not renaming the actual contract method
+        // But we're using it to claim Asylum tokens now
+        // TODO: redeploy smart contracts with updated function names and update references
         const transaction = await asylumDistributorContract.claimXeon();
         await transaction.wait();
         setTxHash(transaction.hash);
@@ -129,7 +135,7 @@ const AsylumTokenTable = () => {
             <td className="py-2 px-4 border-b text-left">
               <button
                 className="bg-black flex items-center gap-2 border-dashed border-light-purple border-2 text-white px-8 py-2 rounded-full hover:text-lime-400"
-                onClick={handleClaimAsylum}
+                onClick={handleClaim}
               >
                 Claim ALT
               </button>
