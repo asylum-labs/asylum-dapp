@@ -4,11 +4,11 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { ThirdwebProvider } from 'thirdweb/react';
 
 export const metadata = {
-  title: 'Xeon Protocol | Redefining DeFi',
+  title: 'Asylum Labs | DeFi redefined',
   description:
-    'Unlock liquidity and manage risk seamlessly with Xeon Protocol, the future of DeFi. Use any ERC-20 token as collateral, lend tokens for a DeFi cash advance, or trade options & swaps using our next-gen hedging tools.',
-  url: 'https://www.app.xeon-protocol.io',
-  image: '/public/xeon-meta-image.png',
+    'Unlock liquidity and manage risk seamlessly with Asylum Labs, the future of DeFi. Use any ERC-20 token as collateral, lend tokens for a DeFi cash advance, or trade options & swaps using our next-gen hedging tools.',
+  url: 'https://www.app.asylum-labs.io',
+  image: '/public/asylum-meta-image.png',
 };
 
 export default function RootLayout({ children }) {

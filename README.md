@@ -1,6 +1,6 @@
 # Asylum Labs dApp
 
-![Asylum Labs](/assets/logo-banner.png)
+![Asylum Labs](/public/asylum-meta-image.png)
 
 ![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/asylum-labs/asylum-dapp) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/asylum-labs/asylum-dapp) ![GitHub contributors](https://img.shields.io/github/contributors/asylum-labs/asylum-dapp)
 
