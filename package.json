@@ -1,7 +1,7 @@
 {
-  "name": "xeon-dapp",
+  "name": "asylum-dapp",
   "version": "0.3.1",
-  "description": "The frontend for Xeon Protocol",
+  "description": "The frontend for Asylum Labs",
   "license": "See LICENSE.md",
   "private": true,
   "scripts": {

@@ -1,11 +1,206 @@
 'use client';
 import { FormControl, FormLabel, Switch } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { FaEthereum } from 'react-icons/fa';
 import AssetsValues from './AssetsValues';
+import { ethers } from 'ethers';
+import {
+  useActiveAccount,
+  useActiveWalletChain,
+  useDisconnect,
+  useWallet,
+} from 'thirdweb/react';
+import {
+  useApprovedBalanceOfToken,
+  useSwitchActiveWalletChain,
+} from 'thirdweb/wallets';
+import { formatUnits } from 'ethers';
+import { baseSepolia } from 'thirdweb/chains';
+import { Constants } from '@/abi/constants';
+import AsylumStakingPoolABI from '@/abi/AsylumStakingPool.abi.json';
 
-function UserAssets() {
+const variants = {
+  hidden: { x: -1000 },
+  visible: {
+    x: 0,
+    transition: {
+      duration: 0.5,
+    },
+  },
+};
+
+const UserAssets = () => {
+  const [activeTab, setActiveTab] = useState('Assets');
+  const [totalEarned, setTotalEarned] = useState('0.00');
+  const [totalClaimed, setTotalClaimed] = useState('0.00');
+  const [walletAsylumBalance, setWalletAsylumBalance] = useState('0.00'); // todo: display user's contract balance
+  const [stakedAsylumBalance, setStakedAsylumBalance] = useState('0.00'); // todo: display user's staked balance
+  const [wethBalance, setWethBalance] = useState('0.00');
+  const [epoch, setEpoch] = useState(0);
+  const [teamFee, setTeamFee] = useState('0.00');
+  const [buybackFee, setBuybackFee] = useState('0.00');
+  const [isApproved, setIsApproved] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isUnstaking, setIsUnstaking] = useState(false);
+  const wallet = useWallet();
+  const activeChain = useActiveWalletChain();
+  const switchChain = useSwitchActiveWalletChain();
+  const connectedAccount = useActiveAccount();
+  const connectedAddress = connectedAccount?.address;
+  const { disconnect } = useDisconnect();
+
+  const AsylumToken = useMemo(() => {
+    if (!window.ethereum) return null;
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    return new ethers.Contract(
+      Constants.testnet.AsylumToken,
+      AsylumStakingPoolABI,
+      signer
+    );
+  }, []);
+
+  const AsylumStakingPool = useMemo(() => {
+    if (!window.ethereum) return null;
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    return new ethers.Contract(
+      Constants.testnet.AsylumStakingPool,
+      AsylumStakingPoolABI,
+      signer
+    );
+  }, []);
+
+  const WETH = useMemo(() => {
+    if (!window.ethereum) return null;
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    return new ethers.Contract(
+      Constants.testnet.WETH,
+      AsylumStakingPoolABI,
+      signer
+    );
+  }, []);
+
+  useEffect(() => {
+    if (!AsylumStakingPool || !WETH || !AsylumToken || !connectedAddress)
+      return;
+    const fetchData = async () => {
+      try {
+        const epoch = await AsylumStakingPool.epoch();
+        setEpoch(epoch.toString());
+        const IERC20 = AsylumToken.interface;
+        const encodedData = IERC20.encodeFunctionData('balanceOf', [
+          Constants.testnet.AsylumStakingPool,
+        ]);
+        const buyBackPercentage = await AsylumStakingPool.buyBackPercentage();
+        setBuybackFee(buyBackPercentage.toString());
+        const teamPercentage = await AsylumStakingPool.teamPercentage();
+        setTeamFee(teamPercentage.toString());
+        const asylumBalance = await AsylumToken.balanceOf(connectedAddress);
+        setWalletAsylumBalance(ethers.utils.formatEther(asylumBalance));
+        // get stakedAsylumBalance
+        const stakedAsylumBalance =
+          await AsylumStakingPool.balanceOf(connectedAddress);
+        setStakedAsylumBalance(ethers.utils.formatEther(stakedAsylumBalance));
+        // get weth balance
+        const wethBalance = await WETH.balanceOf(connectedAddress);
+        setWethBalance(ethers.utils.formatEther(wethBalance));
+      } catch (error) {
+        console.error('Error fetching epoch: ', error);
+      }
+    };
+    fetchData();
+  }, [connectedAddress, AsylumStakingPool, AsylumToken, WETH]);
+
+  // Check if we have already approved the tokens for staking
+  useEffect(() => {
+    if (wallet && AsylumToken && AsylumStakingPool) {
+      AsylumToken.balanceOf(wallet.address).then((balance) => {
+        setWalletAsylumBalance(ethers.utils.formatEther(balance));
+      });
+
+      // Staked balance
+      AsylumStakingPool.stakedAmounts(wallet.address).then((balance) => {
+        setStakedAsylumBalance(ethers.utils.formatEther(balance));
+      });
+
+      AsylumToken.allowance(wallet.address, AsylumStakingPool.address).then(
+        (allowance) => {
+          console.log('ALLOWANCE: ', allowance);
+          setIsApproved(allowance.gt(ethers.utils.parseEther('1000000000')));
+        }
+      );
+    }
+  }, [wallet, AsylumToken, AsylumStakingPool]);
+
+  /**
+   * Handle token approval for token staking
+   */
+  const handleApprove = async () => {
+    setIsLoading(true);
+    try {
+      if (!isApproved && AsylumToken) {
+        const tx = await AsylumToken.approve(
+          AsylumStakingPool.address,
+          ethers.constants.MaxUint256
+        );
+        await tx.wait();
+        setIsApproved(true);
+      }
+    } catch (error) {
+      console.error('Error approving tokens: ', error);
+    }
+    setIsLoading(false);
+  };
+
+  /**
+   * Handle staking tokens
+   */
+  const handleStake = async () => {
+    setIsLoading(true);
+    try {
+      if (isApproved && AsylumStakingPool) {
+        const tx = await AsylumStakingPool.stake(
+          ethers.utils.parseEther('100')
+        );
+        await tx.wait();
+        const balance = await AsylumToken.balanceOf(wallet.address);
+        setWalletAsylumBalance(ethers.utils.formatEther(balance));
+        const stakedBalance = await AsylumStakingPool.stakedAmounts(
+          wallet.address
+        );
+        setStakedAsylumBalance(ethers.utils.formatEther(stakedBalance));
+      }
+    } catch (error) {
+      console.error('Error staking tokens: ', error);
+    }
+    setIsLoading(false);
+  };
+
+  /**
+   * Handle unstaking tokens
+   */
+  const handleUnstake = async () => {
+    setIsUnstaking(true);
+    try {
+      const tx = await AsylumStakingPool.unstake(
+        ethers.utils.parseEther('100')
+      );
+      await tx.wait();
+      const balance = await AsylumToken.balanceOf(wallet.address);
+      setWalletAsylumBalance(ethers.utils.formatEther(balance));
+      const stakedBalance = await AsylumStakingPool.stakedAmounts(
+        wallet.address
+      );
+      setStakedAsylumBalance(ethers.utils.formatEther(stakedBalance));
+    } catch (error) {
+      console.error('Error unstaking tokens: ', error);
+    }
+    setIsUnstaking(false);
+  };
+
   const [isSwitched, setIsSwitched] = useState(false);
 
   const switchHandler = () => {
@@ -112,7 +307,7 @@ function UserAssets() {
               <AssetsValues label="Deposits" value="0.00" />
               <AssetsValues label="Dividents" value="0.00" />
               <AssetsValues label="Commision" value="0.00" />
-              <AssetsValues label="Xeon" value="0.00" />
+              <AssetsValues label="Asylum" value="0.00" />
             </div>
             <div className="w-full ">
               <div className="flex justify-between my-2">
@@ -143,6 +338,6 @@ function UserAssets() {
       </div>
     </div>
   );
-}
+};
 
 export default UserAssets;

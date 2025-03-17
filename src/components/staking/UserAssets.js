@@ -19,7 +19,7 @@ import { FaEthereum } from 'react-icons/fa';
 import AssetsValues from '../wallet/AssetsValues';
 import { useActiveAccount } from 'thirdweb/react';
 import { ethers } from 'ethers';
-import XeonStakingPoolABI from '@/abi/XeonStakingPool.abi.json';
+import AsylumStakingPoolABI from '@/abi/AsylumStakingPool.abi.json';
 import { Constants } from '@/abi/constants';
 import BookmarkAdded from '../BookmarkAdded';
 
@@ -37,8 +37,8 @@ function UserAssets() {
   const [ethInPool, setEthInPool] = useState('0.00');
   const [buyBackPercentage, setBuyBackPercentage] = useState('0.00');
   const [teamPercentage, setTeamPercentage] = useState('0.00');
-  const [walletXeonBalance, setWalletXeonBalance] = useState('0.00'); // todo: display user's contract balance
-  const [stakedXeonBalance, setStakedXeonBalance] = useState('0.00'); // todo: display user's staked balance
+  const [walletAsylumBalance, setWalletAsylumBalance] = useState('0.00'); // todo: display user's contract balance
+  const [stakedAsylumBalance, setStakedAsylumBalance] = useState('0.00'); // todo: display user's staked balance
   const { isOpen, onOpen, onClose } = useDisclosure();
   const wallet = useActiveAccount();
   const connectedAddress = wallet?.address;
@@ -54,20 +54,20 @@ function UserAssets() {
     }
   }, []);
 
-  const XeonToken = useMemo(() => {
+  const AsylumToken = useMemo(() => {
     if (!provider || !signer) return null;
     return new ethers.Contract(
-      Constants.testnet.XeonToken,
-      XeonStakingPoolABI,
+      Constants.testnet.AsylumToken,
+      AsylumStakingPoolABI,
       signer
     );
   }, [provider, signer]);
 
-  const XeonStakingPool = useMemo(() => {
+  const AsylumStakingPool = useMemo(() => {
     if (!provider || !signer) return null;
     return new ethers.Contract(
-      Constants.testnet.XeonStakingPool,
-      XeonStakingPoolABI,
+      Constants.testnet.AsylumStakingPool,
+      AsylumStakingPoolABI,
       signer
     );
   }, [provider, signer]);
@@ -76,7 +76,7 @@ function UserAssets() {
     if (!provider) return null;
     return new ethers.Contract(
       Constants.testnet.WETH,
-      XeonStakingPoolABI,
+      AsylumStakingPoolABI,
       provider
     );
   }, [provider]);
@@ -84,29 +84,29 @@ function UserAssets() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (!XeonStakingPool || !WETH || !XeonToken || !connectedAddress)
+        if (!AsylumStakingPool || !WETH || !AsylumToken || !connectedAddress)
           return;
 
-        const epoch = await XeonStakingPool.epoch();
+        const epoch = await AsylumStakingPool.epoch();
         setEpoch(ethers.utils.formatUnits(epoch, 0));
 
         const ethBalance = await WETH.balanceOf(
-          Constants.testnet.XeonStakingPool
+          Constants.testnet.AsylumStakingPool
         );
         setEthInPool(ethers.utils.formatEther(ethBalance));
 
-        const buyBackPercentage = await XeonStakingPool.buyBackPercentage();
+        const buyBackPercentage = await AsylumStakingPool.buyBackPercentage();
         setBuyBackPercentage(ethers.utils.formatUnits(buyBackPercentage, 0));
 
-        const teamPercentage = await XeonStakingPool.teamPercentage();
+        const teamPercentage = await AsylumStakingPool.teamPercentage();
         setTeamPercentage(ethers.utils.formatUnits(teamPercentage, 0));
 
-        const xeonBalance = await XeonToken.balanceOf(connectedAddress);
-        setWalletXeonBalance(ethers.utils.formatEther(xeonBalance));
+        const asylumBalance = await AsylumToken.balanceOf(connectedAddress);
+        setWalletAsylumBalance(ethers.utils.formatEther(asylumBalance));
 
-        const stakedXeonBalance =
-          await XeonStakingPool.balanceOf(connectedAddress);
-        setStakedXeonBalance(ethers.utils.formatEther(stakedXeonBalance));
+        const stakedAsylumBalance =
+          await AsylumStakingPool.balanceOf(connectedAddress);
+        setStakedAsylumBalance(ethers.utils.formatEther(stakedAsylumBalance));
       } catch (error) {
         console.error('Error fetching asset values:', error);
       }
@@ -115,19 +115,19 @@ function UserAssets() {
     if (connectedAddress) {
       fetchData();
     }
-  }, [connectedAddress, XeonStakingPool, XeonToken, WETH]);
+  }, [connectedAddress, AsylumStakingPool, AsylumToken, WETH]);
 
   useEffect(() => {
-    if (wallet && XeonToken && XeonStakingPool) {
-      XeonToken.balanceOf(wallet.address).then((balance) => {
+    if (wallet && AsylumToken && AsylumStakingPool) {
+      AsylumToken.balanceOf(wallet.address).then((balance) => {
         setWalletBalance(ethers.utils.formatEther(balance));
       });
 
-      XeonStakingPool.stakedAmounts(wallet.address).then((balance) => {
+      AsylumStakingPool.stakedAmounts(wallet.address).then((balance) => {
         setStakedBalance(ethers.utils.formatEther(balance));
       });
 
-      XeonToken.allowance(wallet.address, XeonStakingPool.address).then(
+      AsylumToken.allowance(wallet.address, AsylumStakingPool.address).then(
         (allowance) => {
           if (ethers.utils.formatEther(allowance) > 0) {
             setIsApproved(true);
@@ -136,7 +136,7 @@ function UserAssets() {
         }
       );
     }
-  }, [wallet, XeonToken, XeonStakingPool]);
+  }, [wallet, AsylumToken, AsylumStakingPool]);
 
   const switchHandler = () => {
     setIsSwitched(!isSwitched);
@@ -145,9 +145,9 @@ function UserAssets() {
   const handleApprove = async () => {
     setLoading(true);
     try {
-      if (!isApproved && XeonToken) {
-        const tx = await XeonToken.approve(
-          XeonStakingPool.address,
+      if (!isApproved && AsylumToken) {
+        const tx = await AsylumToken.approve(
+          AsylumStakingPool.address,
           ethers.utils.parseEther(stakeAmount)
         );
         await tx.wait();
@@ -169,8 +169,8 @@ function UserAssets() {
   const handleStake = async () => {
     setLoading(true);
     try {
-      if (isApproved && XeonStakingPool) {
-        const tx = await XeonStakingPool.stake(
+      if (isApproved && AsylumStakingPool) {
+        const tx = await AsylumStakingPool.stake(
           ethers.utils.parseEther(stakeAmount)
         );
         await tx.wait();
@@ -194,7 +194,7 @@ function UserAssets() {
         throw new Error('Unstake amount exceeds staked balance');
       }
 
-      const tx = await XeonStakingPool.unstake(
+      const tx = await AsylumStakingPool.unstake(
         ethers.utils.parseEther(stakeAmount)
       );
       await tx.wait();
@@ -317,7 +317,7 @@ function UserAssets() {
               <AssetsValues label="Epoch" value={epoch} />
               <AssetsValues label="ETH in pool" value={ethInPool} />
               <AssetsValues
-                label="$XEON Buyback"
+                label="$ALT Buyback"
                 value={`${buyBackPercentage}%`}
               />
               <AssetsValues
@@ -329,14 +329,14 @@ function UserAssets() {
               <div className="flex justify-between my-2">
                 <p className="text-lg text-grey">Staked</p>
                 <div className="flex items-center gap-2">
-                  <p className="text-grey"> $XEON {stakedBalance}</p>
+                  <p className="text-grey"> $ALT {stakedBalance}</p>
                 </div>
               </div>
 
               <div className="flex justify-between my-2">
                 <p className="text-lg text-grey">Wallet</p>
                 <div className="flex items-center gap-2">
-                  <p className="text-grey"> $XEON {walletBalance}</p>
+                  <p className="text-grey"> $ALT {walletBalance}</p>
                 </div>
               </div>
             </div>

@@ -123,13 +123,13 @@ const Layout = ({
             <div>
               <p className="text-grey text-lg">Reach Us</p>
               <div className="flex gap-4 mt-2">
-                <a href="https://twitter.com/XeonProtocol">
+                <a href="https://twitter.com/AsylumLabs">
                   <Image src="/x.webp" alt="container" className="w-8" />
                 </a>
                 <a href="https://medium.com/@xeonprotocol">
                   <Image src="/medium.webp" alt="container" className="w-8" />
                 </a>
-                <a href="https://t.me/XeonProtocolPortal">
+                <a href="https://t.me/AsylumLabsPortal">
                   <Image src="/telegram.webp" alt="container" className="w-8" />
                 </a>
                 <a href="mailto:info@xeon-protocol.io">

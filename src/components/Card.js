@@ -227,7 +227,15 @@ function Card() {
               'bg-black text-grey flex flex-col justify-center items-center'
             }
           >
-            <Image src="/info.webp" alt="xeon" />
+            <span className="info">
+              <Image src="/info.webp" alt="asylum" />
+              <div className="show-info">
+                <p className="text-grey">
+                  Hedge your assets by selecting the token you want to hedge,
+                  the token it&apos;s paired with and the price hedge
+                </p>
+              </div>
+            </span>
             <div className="border-[2px] w-full rounded-lg border-gray-800 p-4 flex justify-between items-center mt-5">
               <div className="flex items-center">
                 <div className="flex mr-2 items-center">

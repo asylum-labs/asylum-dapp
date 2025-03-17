@@ -4,7 +4,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { Image } from '@chakra-ui/react';
 import Lottie from 'react-lottie-player';
 import lottieJson from '@/assets/animations/PE2.json';
-import XeonStakingPoolABI from '@/abi/XeonStakingPool.abi.json';
+import AsylumStakingPoolABI from '@/abi/AsylumStakingPool.abi.json';
 import { Constants } from '@/abi/constants';
 import Header from '@/components/Header';
 import UserAssets from '@/components/staking/UserAssets';
@@ -45,32 +45,32 @@ function Page() {
     initializeProvider();
   }, []);
 
-  // memoize the XeonStakingPool contract instance to avoid re-creating it on every render
-  const XeonStakingPool = useMemo(() => {
-    if (!provider || !signer) return null;
+  // memoize the AsylumStakingPool contract instance to avoid re-creating it on every render
+  const AsylumStakingPool = useMemo(() => {
+    if (!window.ethereum) return null;
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
     return new ethers.Contract(
-      Constants.testnet.XeonStakingPool,
-      XeonStakingPoolABI,
+      Constants.testnet.AsylumStakingPool,
+      AsylumStakingPoolABI,
       signer
     );
-  }, [provider, signer]);
+  }, []);
 
-  // fetch current buyback percentage value from staking contract
   useEffect(() => {
-    const fetchBuybackPercentage = async () => {
-      if (XeonStakingPool) {
+    if (AsylumStakingPool) {
+      const getPercentage = async () => {
         try {
-          // todo: for mainnet, ensure value is formatted correctly (N/10000)
-          const percentage = await XeonStakingPool.buyBackPercentage(); // assume integer value from contract
-          setCurrentPercentage(percentage.toNumber()); // update state with value
+          const percentage = await AsylumStakingPool.buyBackPercentage(); // assume integer value from contract
+          setCurrentPercentage(percentage.toNumber());
         } catch (error) {
           console.error('Error fetching buyback percentage:', error);
         }
-      }
-    };
+      };
 
-    fetchBuybackPercentage();
-  }, [XeonStakingPool]);
+      getPercentage();
+    }
+  }, [AsylumStakingPool]);
 
   // handle increment and decrement of vote value
   // todo: for mainnet, ensure vote value is clamped to contract min/max
@@ -83,8 +83,7 @@ function Page() {
   };
 
   const handleVote = async () => {
-    if (!XeonStakingPool || voteValue < 1 || voteValue > 100) {
-      setMessage('Please enter a value between 1 and 100');
+    if (!AsylumStakingPool || voteValue < 1 || voteValue > 100) {
       return;
     }
 
@@ -92,14 +91,15 @@ function Page() {
     onOpen();
 
     try {
-      const tx = await XeonStakingPool.voteForBuybackPercentage(voteValue);
+      const tx = await AsylumStakingPool.voteForBuybackPercentage(voteValue);
       await tx.wait();
       setLoading(false);
+      setCurrentPercentage(voteValue);
       setMessage(`Vote successful for ${voteValue}% buyback`);
     } catch (error) {
-      console.error('Vote failed', error);
+      console.error('Error voting:', error);
       setLoading(false);
-      setMessage('Vote failed, please try again.');
+      setMessage('Failed to cast vote. Please try again.');
     }
   };
 
@@ -120,7 +120,7 @@ function Page() {
         <div className="md:w-[40%] lg:w-auto md:px-0 lg:px-18 flex items-center md:block">
           <h1 className="text-grey text-3xl md:text-5xl lg:text-7xl">Stake</h1>
           <h1 className="text-floral text-3xl md:text-5xl lg:text-7xl ml-1 md:ml-10">
-            Xeon
+            Asylum
           </h1>
 
           <Image
@@ -136,18 +136,18 @@ function Page() {
           />
         </div>
         <div className="relative">
-          <p className="text-grey text-lg w-[85%] mt-4">Stake XEON and earn.</p>
+          <p className="text-grey text-lg w-[85%] mt-4">Stake ALT and earn.</p>
           <div className="md:absolute md:top-24 lg:top-20 md:left-[30px] lg:left-8 w-full h-full">
             <p className="text-grey md:text-justify text-lg md:w-[80%]">
-              Staking XEON allows you to passively earn a share of the revenue
+              Staking ALT allows you to passively earn a share of the revenue
               generated through the protocol. Staking Epochs last for 30 days,
-              followed by a 3 day window during which time XEON can be staked or
+              followed by a 3 day window during which time ALT can be staked or
               unstaked. All revenue collected through the protocol is deposited
               into the staking pool and split among stakers proportional to the
-              amount of XEON staked. The staking pool also automatically buys
-              back XEON from the LP at the end of every epoch, translating to
-              passive buy pressure on the token. Stakers can vote on the
-              percentage of revenue used to buyback XEON.
+              amount of ALT staked. The staking pool automatically buys back ALT
+              from the LP at the end of every epoch, translating to passive buy
+              pressure on the token. Stakers can vote on the percentage of
+              revenue used to buyback ALT.
             </p>
           </div>
           <Image
@@ -184,11 +184,11 @@ function Page() {
         <div className="w-full md:w-1/2 p-5">
           <div className="text-grey text-lg mt-4 border-2 p-2 rounded-md">
             <h3 className="text-grey text-3xl md:text-5xl lg:text-7xl">
-              $XEON Buyback
+              $ALT Buyback
             </h3>
             <p className="text-left mt-2">
-              What percentage of protocol revenue should be used to buyback
-              $XEON token?
+              What percentage of protocol revenue should be used to buyback $ALT
+              token?
             </p>
             <div className="flex items-center mt-5">
               <button

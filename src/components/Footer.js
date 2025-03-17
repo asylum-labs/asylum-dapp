@@ -24,13 +24,13 @@ function Footer() {
         position="relative"
         zIndex="2"
       >
+        {/* TODO: update all links */}
         <Box className="w-full md:w-1/2 p-4" color="white" textAlign="left">
-          <p>Xeon Protocol.</p>
-          <p>ERC20 Hedging & Lending Ecosystem.</p>
-
+          <p>Asylum Labs</p>
+          <p>DeFi redefined</p>
           <div className="footer-social">
             <a
-              href="https://linktr.ee/XeonProtocol"
+              href="https://linktr.ee/AsylumLabs"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -51,7 +51,7 @@ function Footer() {
             </a>
 
             <a
-              href="https://twitter.com/XeonProtocol"
+              href="https://twitter.com/AsylumLabs"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -83,7 +83,7 @@ function Footer() {
               </svg>
             </a>
             <a
-              href="https://warpcast.com/xeonprotocol"
+              href="https://warpcast.com/asylum-labs"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -103,7 +103,7 @@ function Footer() {
               </svg>
             </a>
             <a
-              href="https://t.me/XeonProtocolPortal"
+              href="https://t.me/AsylumLabsPortal"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -145,8 +145,10 @@ function Footer() {
                 />
               </svg>
             </a>
+            {/* TODO: update all links --
+            "https://xeonprotocol.gitbook.io/xeon-protocol-documentation/" */}
             <a
-              href="https://xeonprotocol.gitbook.io/xeon-protocol-documentation/"
+              href="https://docs.asylum-labs.io/documentation/"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -167,110 +169,111 @@ function Footer() {
                 />
               </svg>
             </a>
-            <a href="mailto:info@xeon-protocol.io">
+            <a href="mailto:asylum.defi@pm.me">
               <MdMail size={20} className="line" />
             </a>
           </div>
         </Box>
         <Box className="w-full md:w-1/6 p-4" textAlign="left">
           <p className="mb-2 text-grey">{`{ READ }`}</p>
-          <li className="mb-2 text-grey">
-            {' '}
-            <Link
-              href="https://docs.xeon-protocol.io/documentation"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Documentation
-            </Link>
-          </li>
-
-          <li className="mb-2 text-grey">
-            <Link
-              target="_blank"
-              rel="noopener noreferrer"
-              href="/Xeon-Protocol-WhitepaperV2.pdf"
-            >
-              Whitepaper
-            </Link>
-          </li>
-          <li className="mb-2 text-grey">
-            <Link
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://medium.com/@xeonprotocol"
-            >
-              Medium
-            </Link>
-          </li>
+          <ul className="list-none p-0">
+            <li className="mb-2 text-grey">
+              {' '}
+              <Link
+                href="https://docs.asylum-labs.io/documentation"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Documentation
+              </Link>
+            </li>
+            {/* TODO: update whitepaper */}
+            <li className="mb-2 text-grey">
+              <Link
+                className="text-xs text-gray-400 hover:underline"
+                href="/Asylum-Labs-WhitepaperV2.pdf"
+                target="_blank"
+              >
+                Whitepaper
+              </Link>
+            </li>
+            <li className="mb-2 text-grey">
+              <Link
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://paragraph.xyz/@jonbray.eth"
+              >
+                Paragraph
+              </Link>
+            </li>
+          </ul>
         </Box>
         <Box className="w-full md:w-1/6 p-4" textAlign="left">
           <p className="mb-2 text-grey">{`{ ENGINEERING }`}</p>
-          <li className="mb-2 text-grey">
-            {' '}
-            <Link
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://github.com/neonhedge"
-            >
-              Github Repo
-            </Link>
-          </li>
+          <ul className="list-none p-0">
+            <li className="mb-2 text-grey">
+              {' '}
+              <Link
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://github.com/asylum-labs"
+              >
+                Github Repo
+              </Link>
+            </li>
 
-          <li className="mb-2 text-grey">
-            <Link
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://docs.xeon-protocol.io/documentation/mechanics/development/deployments"
-            >
-              Smart Contracts
-            </Link>
-          </li>
-          <li className="mb-2 text-grey">
-            <Link
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://docs.xeon-protocol.io/documentation/mechanics/development/security-audits"
-            >
-              Secutity Audits
-            </Link>
-          </li>
+            <li className="mb-2 text-grey">
+              <Link
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://docs.asylum-labs.io/documentation/mechanics/development/deployments"
+              >
+                Smart Contracts
+              </Link>
+            </li>
+            <li className="mb-2 text-grey">
+              <Link
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://docs.asylum-labs.io/documentation/mechanics/development/security-audits"
+              >
+                Secutity Audits
+              </Link>
+            </li>
+          </ul>
         </Box>
         <Box className="w-full md:w-1/6 p-4" textAlign="left">
           <p className="mb-2 text-grey">{`{ REVENUE SHARING }`}</p>
-          <li className="mb-2 text-grey">
-            {' '}
-            <Link
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://docs.xeon-protocol.io/documentation/real-yield/protocol-income"
-            >
-              Protocol Fees
-            </Link>
-          </li>
-
-          <li className="mb-2 text-grey">
-            <Link
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://docs.xeon-protocol.io/documentation/earn-with-us/how-to-earn"
-            >
-              Ways to Earn
-            </Link>
-          </li>
-          <li className="mb-2 text-grey">
-            <Link
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://docs.xeon-protocol.io/documentation/earn-with-us/hedge-mining"
-            >
-              Miner Program
-            </Link>
-          </li>
+          <ul className="list-none p-0">
+            <li className="mb-2 text-grey">
+              {' '}
+              <Link target="_blank" rel="noopener noreferrer" href="/stake">
+                Staking
+              </Link>
+            </li>
+            <li className="mb-2 text-grey">
+              <Link
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://docs.asylum-labs.io/documentation/mechanics/tokenomics/revenue-share"
+              >
+                Revenue Sharing
+              </Link>
+            </li>
+            <li className="mb-2 text-grey">
+              <Link
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://docs.asylum-labs.io/documentation/mechanics/tokenomics/buyback"
+              >
+                Buyback
+              </Link>
+            </li>
+          </ul>
         </Box>
       </Box>
       <Box className="w-full text-center text-white p-4 border-t-[1px] border-[#6c6c6c]">
-        <p> Xeon Protocol © All rights reserved. 2024.</p>
+        <p> Asylum Labs © All rights reserved. 2025.</p>
       </Box>
     </Box>
   );
