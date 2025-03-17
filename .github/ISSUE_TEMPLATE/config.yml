@@ -1,17 +1,17 @@
 blank_issues_enabled: false
 contact_links:
   - name: Dev Support
-    url: mailto:jon@xeon-protocol.io
+    url: mailto:asylum.defi@pm.me
     about: If you need support or have questions, please contact the developer.
   - name: GitBook
-    url: https://xeon-protocol.gitbook.io/documentation/
-    about: Learn more about Xeon Protocol
+    url: https://asylum-labs.gitbook.io/asylum/
+ about: Learn more about Asylum Labs
   - name: Warpcast
-    url: https://warpcast.com/xeonprotocol
+    url: https://warpcast.com/asylum-labs
     about: Contact us on Warpcast
   - name: Twitter
-    url: https://twitter.com/xeonprotocol
+    url: https://twitter.com/asylum-labs
     about: Contact us on Twitter
-  - name: Telegram
-    url: https://t.me/XeonProtocolPortal
-    about: Join us on Telegram
+  - name: Paragraph
+    url: https://paragraph.xyz/asylum-labs
+    about: Stay up to date with the Asylum Labs newsletter

@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Suggest a new idea for the Xeon Protocol dApp.
+about: Suggest a new idea for the Asylum Labs dApp.
 title: 'feat: [description]'
 labels: 'status: discussing, type: feature request'
 assignees: heyJonBray
