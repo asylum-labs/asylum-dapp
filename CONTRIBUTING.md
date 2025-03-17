@@ -1,18 +1,18 @@
 # Contributing
 
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-darkgreen.svg)](https://github.com/xeon-protocol/xeon-dapp/blob/main/CONTRIBUTING.md) [![Bug Bounties](https://img.shields.io/badge/Bug_Bounties-open-darkgreen.svg)](https://github.com/xeon-protocol/xeon-dapp/blob/main/SECURITY.md)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-darkgreen.svg)](https://github.com/asylum-Labs/.github/blob/main/CONTRIBUTING.md) [![Bug Bounties](https://img.shields.io/badge/Bug_Bounties-open-darkgreen.svg)](https://github.com/asylum-Labs/.github/blob/main/SECURITY.md)
 
-Feel free to dive in! [Open](https://github.com/xeon-protocol/xeon-dapp/issues/new) an issue, [start](https://github.com/xeon-protocol/xeon-dapp/discussions/new) a discussion or submit a PR. For any informal concerns or feedback, please join our [Telegram Group](https://t.me/XeonProtocolPortal).
+Feel free to dive in! [Open](https://github.com/asylum-Labs/asylum-dapp/issues/new) an issue, [start](https://github.com/orgs/asylum-labs/discussions/new) a discussion or submit a PR. For any inquiries or feedback, send us an [email](mailto:asylum.defi@pm.me).
 
-Contributions to Xeon Protocol are welcome by anyone interested in writing tests, improving readability, optimizing the build, or extending the protocol via new features.
+Contributions to Asylum Labs are welcome by anyone interested in writing tests, improving readability, optimizing the build, or extending the protocol via new features.
 
 ## Pre Requisites
 
 You will need the following software on your machine:
 
-[![git](https://img.shields.io/badge/git-any-darkgreen)](https://git-scm.com/downloads) [![node](https://img.shields.io/badge/node.js->_14.2.4-darkgreen)](https://nodejs.org/en/download/) [![npm](https://img.shields.io/badge/npm->=_6-darkgreen)](https://npmjs.com/)
+[![git](https://img.shields.io/badge/git-any-darkgreen)](https://git-scm.com/downloads) [![node](https://img.shields.io/badge/node.js->_14.2.4-darkgreen)](https://nodejs.org/en/download/) [![npm](https://img.shields.io/badge/npm->=_6-darkgreen)](https://npmjs.com/) [![foundry](https://img.shields.io/badge/foundry-grey)](https://book.getfoundry.sh/)
 
-In addition, familiarity with [Solidity](https://soliditylang.org/) and contract ABIs is a plus but not required for frontend contribution.
+Familiarity with [Solidity](https://soliditylang.org/) and contract ABIs will be helpful but not required for frontend-only contributions.
 
 ## Getting Started
 
@@ -20,14 +20,16 @@ In addition, familiarity with [Solidity](https://soliditylang.org/) and contract
 
 First, create a fork of this repository to your GitHub account. You can do this by visiting the repository page and clicking the "Fork" button in the top right corner.
 
-[Visit the Repository](https://github.com/xeon-protocol/xeon-dapp)
+- [Asylum Labs dApp](https://github.com/asylum-Labs/asylum-dapp)
+- [Asylum Labs Contracts](https://github.com/asylum-Labs/v1-core)
+- [Asylum Labs Testnet](https://github.com/asylum-Labs/testnet-contracts)
 
 ### 2. Clone Your Fork Locally
 
 Once you have forked the repository, clone your fork to your local machine:
 
 ```shell
-git clone https://github.com/<your-username>/xeon-dapp.git
+git clone https://github.com/<your-username>/asylum-dapp.git
 ```
 
 ### 3. Set Up the Original Repository as a Remote
@@ -35,8 +37,8 @@ git clone https://github.com/<your-username>/xeon-dapp.git
 To keep your fork up-to-date with the original repository, add the original repository as a remote:
 
 ```shell
-cd xeon-dapp
-git remote add upstream https://github.com/xeon-protocol/xeon-dapp.git
+cd asylum-dapp
+git remote add upstream https://github.com/asylum-Labs/asylum-dapp.git
 ```
 
 ## Environment variables
@@ -45,7 +47,7 @@ git remote add upstream https://github.com/xeon-protocol/xeon-dapp.git
 
 To build locally, copy the `.env.sample` file to a new `.env` file at the root of the repo and populate it with the appropriate environment values.
 
-⚠️ **NOTE:** Only put sensitive data in the `.env` file, which `.gitignore` will automatically ignore. **DO NOT** save sensitive data in `.env.sample`.
+⚠️ **NOTE:** Only put sensitive data in `.env` files which are included in the `.gitignore`! **DO NOT** save sensitive data in `.env.sample`.
 
 ## Pull Requests
 
@@ -58,8 +60,9 @@ When making a pull request, ensure that:
 - Code coverage remains the same or greater.
 - All new code adheres to the style guide:
   - All lint checks pass
-  - Code is thoroughly commented with NatSpec where relevant.
+  - Code is thoroughly commented where relevant.
 - If making a change to the contracts:
+  - `forge fmt` and `forge test` pass.
   - Gas snapshots are provided and demonstrate an improvement (or an acceptable deficit given other improvements).
   - Reference contracts are modified correspondingly if relevant.
   - New tests are included for all new features or code paths.
@@ -100,7 +103,7 @@ In order to maintain high quality code that is easy to collaborate on, please ma
 - After merging a branch, delete it to keep the repo clean.
 - Document any significant changes or new features in our project documentation (`README.md` and associated files).
 
-## Additional Guidelines
+## Additional Info
 
 - **Commit Messages:** Write clear and concise commit messages that accurately describe the changes made. Use the imperative mood and present tense (e.g., `"Fix bug in user authentication"`).
 - **Coding Standards:** Follow our coding standards and style guides to ensure consistency across the codebase. Refer to the project's documentation for specific guidelines.
@@ -109,8 +112,8 @@ In order to maintain high quality code that is easy to collaborate on, please ma
 
 ## Commit Guidelines
 
-We use conventional commits in our codebases, more information [here](commit-guidelines.md)
+Asylum Labs ❤️ [gitmoji](https://gitmoji.dev/)!
 
 ## Notice
 
-These guidelines apply to all code in the Xeon Protocol codebase and this `CONTRIBUTING.md` file should accompany every repository in the organization.
+These guidelines apply to all code in the Asylum Labs codebase and this `CONTRIBUTING.md` file should accompany every repository in the organization.
